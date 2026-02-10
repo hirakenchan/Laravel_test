@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build containers
+        run: docker compose build
+
+      - name: Install deps
+        run: docker compose run --rm app composer install
+
+      - name: Run tests
+        run: docker compose run --rm app php artisan test
